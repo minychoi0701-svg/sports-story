@@ -1,0 +1,30 @@
+---
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  article: CollectionEntry<'articles'>;
+}
+
+const { article } = Astro.props;
+const { title, summary, pubDate, tags, sport } = article.data;
+
+const sportLabel = { baseball: '야구', soccer: '축구', basketball: '농구' }[sport];
+
+const formattedDate = pubDate.toLocaleDateString('ko-KR', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+});
+---
+
+<a href={`/articles/${article.id}/`} class="article-card">
+  <div class="article-card__top">
+    <span class="badge" data-sport={sport}>{sportLabel}</span>
+    <span class="article-card__date">{formattedDate}</span>
+  </div>
+  <h3>{title}</h3>
+  <p>{summary}</p>
+  <div class="article-card__tags">
+    {tags.map((tag: string) => <span class="tag">#{tag}</span>)}
+  </div>
+</a>

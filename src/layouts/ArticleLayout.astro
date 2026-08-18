@@ -1,0 +1,39 @@
+---
+import BaseLayout from './BaseLayout.astro';
+
+interface Props {
+  title: string;
+  summary: string;
+  sport: 'baseball' | 'soccer' | 'basketball';
+  pubDate: Date;
+  tags: string[];
+}
+
+const { title, summary, sport, pubDate, tags } = Astro.props;
+
+const sportLabel = { baseball: '야구', soccer: '축구', basketball: '농구' }[sport];
+const sportHref = { baseball: '/baseball/', soccer: '/soccer/', basketball: '/basketball/' }[sport];
+
+const formattedDate = pubDate.toLocaleDateString('ko-KR', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+});
+---
+
+<BaseLayout title={`${title} — 스포츠스토리`} description={summary} activeSport={sport}>
+  <header class="article-header" data-sport={sport}>
+    <div class="wrap">
+      <span class="badge" data-sport={sport}>{sportLabel}</span>
+      <h1>{title}</h1>
+      <p class="article-header__meta">{formattedDate}</p>
+    </div>
+  </header>
+  <article class="article-body">
+    <a href={sportHref} class="back-link">← {sportLabel} 스토리 전체 보기</a>
+    <slot />
+    <div class="article-body__tags">
+      {tags.map((tag) => <span class="tag">#{tag}</span>)}
+    </div>
+  </article>
+</BaseLayout>

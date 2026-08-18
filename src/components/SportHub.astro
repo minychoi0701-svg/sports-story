@@ -1,0 +1,56 @@
+---
+import { getCollection } from 'astro:content';
+import ArticleCard from './ArticleCard.astro';
+
+interface Props {
+  sport: 'baseball' | 'soccer' | 'basketball';
+}
+
+const { sport } = Astro.props;
+
+const meta = {
+  baseball: {
+    label: '야구',
+    emoji: '⚾',
+    tagline: '복숭아 바구니가 아니라 다이아몬드 위의 이야기',
+    description:
+      '150년 넘게 이어져 온 야구의 역사, MLB와 KBO의 발자취, 그리고 전설적인 선수와 명장면들을 만나보세요.',
+  },
+  soccer: {
+    label: '축구',
+    emoji: '⚽',
+    tagline: '지구에서 가장 많은 사람이 사랑하는 스포츠',
+    description:
+      '월드컵의 드라마, 전술의 진화, 그리고 펠레부터 손흥민까지 축구 역사를 수놓은 이야기들을 모았습니다.',
+  },
+  basketball: {
+    label: '농구',
+    emoji: '🏀',
+    tagline: '복숭아 바구니에서 시작된 코트 위의 드라마',
+    description: 'NBA와 KBL의 역사, 규칙의 진화, 그리고 시대를 대표하는 레전드들의 이야기입니다.',
+  },
+} as const;
+
+const info = meta[sport];
+
+const articles = (await getCollection('articles', ({ data }) => data.sport === sport)).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+---
+
+<section class="sport-banner" data-sport={sport}>
+  <div class="wrap">
+    <div class="sport-banner__badge">{info.tagline}</div>
+    <h1>{info.emoji} {info.label} 스토리</h1>
+    <p>{info.description}</p>
+  </div>
+</section>
+
+<section class="section wrap">
+  <div class="section__head">
+    <h2>전체 기사 ({articles.length})</h2>
+  </div>
+  <div class="article-grid">
+    {articles.map((article) => <ArticleCard article={article} />)}
+  </div>
+</section>

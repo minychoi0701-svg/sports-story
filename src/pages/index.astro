@@ -1,0 +1,57 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero from '../components/Hero.astro';
+import ArticleCard from '../components/ArticleCard.astro';
+
+const allArticles = await getCollection('articles');
+const latest = [...allArticles]
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .slice(0, 6);
+
+const sports = [
+  { key: 'baseball', label: '야구', emoji: '⚾', href: '/baseball/' },
+  { key: 'soccer', label: '축구', emoji: '⚽', href: '/soccer/' },
+  { key: 'basketball', label: '농구', emoji: '🏀', href: '/basketball/' },
+] as const;
+---
+
+<BaseLayout title="스포츠스토리 — 야구·축구·농구 역사와 이야기">
+  <Hero />
+
+  <section class="section wrap">
+    <div class="section__head">
+      <h2>종목별로 둘러보기</h2>
+    </div>
+    <div class="article-grid">
+      {
+        sports.map((sport) => {
+          const count = allArticles.filter((a) => a.data.sport === sport.key).length;
+          return (
+            <a href={sport.href} class="article-card">
+              <div class="article-card__top">
+                <span class="badge" data-sport={sport.key}>
+                  {sport.label}
+                </span>
+                <span class="article-card__date">기사 {count}편</span>
+              </div>
+              <h3>
+                {sport.emoji} {sport.label} 스토리 보러가기
+              </h3>
+              <p>{sport.label}의 역사, 리그, 전설적인 선수와 명장면까지 한곳에서 만나보세요.</p>
+            </a>
+          );
+        })
+      }
+    </div>
+  </section>
+
+  <section class="section wrap">
+    <div class="section__head">
+      <h2>최신 기사</h2>
+    </div>
+    <div class="article-grid">
+      {latest.map((article) => <ArticleCard article={article} />)}
+    </div>
+  </section>
+</BaseLayout>

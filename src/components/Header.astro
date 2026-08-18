@@ -1,0 +1,34 @@
+---
+interface Props {
+  activeSport?: 'baseball' | 'soccer' | 'basketball';
+}
+
+const { activeSport } = Astro.props;
+
+const links = [
+  { sport: 'baseball', label: '야구', href: '/baseball/' },
+  { sport: 'soccer', label: '축구', href: '/soccer/' },
+  { sport: 'basketball', label: '농구', href: '/basketball/' },
+] as const;
+---
+
+<header class="site-header">
+  <div class="site-header__inner">
+    <a href="/" class="site-logo">
+      스포츠<span class="site-logo__ball">스토리</span>
+    </a>
+    <nav class="site-nav">
+      {
+        links.map((link) => (
+          <a
+            href={link.href}
+            data-sport={link.sport}
+            class:list={[{ 'is-active': activeSport === link.sport }]}
+          >
+            {link.label}
+          </a>
+        ))
+      }
+    </nav>
+  </div>
+</header>
