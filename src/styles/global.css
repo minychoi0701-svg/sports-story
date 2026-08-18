@@ -1,3 +1,11 @@
+@font-face {
+  font-family: "YeogiOttaeJalnan";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_four@1.2/JalnanOTF00.woff")
+    format("woff");
+  font-weight: normal;
+  font-display: swap;
+}
+
 :root {
   --color-ink: #0b1220;
   --color-ink-soft: #1c2b45;
@@ -14,7 +22,7 @@
   --color-basketball: #ff7a00;
   --color-basketball-dark: #b34f00;
 
-  --font-display: "Black Han Sans", "Noto Sans KR", sans-serif;
+  --font-display: "YeogiOttaeJalnan", "Black Han Sans", "Noto Sans KR", sans-serif;
   --font-body: "Noto Sans KR", "Pretendard", -apple-system, BlinkMacSystemFont, sans-serif;
 
   --radius-md: 10px;
